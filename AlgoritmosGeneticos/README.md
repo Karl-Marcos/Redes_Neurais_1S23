@@ -1,5 +1,6 @@
-# Experimentos de otimização e algoritmos genéticos
+# Experimentos
 
+Os experimentos foram realizados nos notebooks abaixo, que são arquivos **.ipynb** <br>
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.01%20-%20busca%20aleatoria.ipynb">Experimento A.01 - Busca Aleatória </a> <br>
 Esse experimento consiste de um problema de otimização de caixas binárias. O código que foi implementado utiliza um algoritmo de **busca aleatória** para encontrar o candidato com a maior função objetivo.
 
@@ -10,3 +11,7 @@ Novamente um experimento de otimização de caixas binárias. Dessa vez o códig
 Esse código também otimiza o problema de caixas binárias, dessa vez usando um **algoritmo genético**. Além disso, ele é capaz de produzir um gráfico que mostra o valor médio da função objetivo da população em função da geração.
 
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.04%20-%20caixas%20nao-binarias.ipynb">Experimento A.04 - Caixas não binárias </a> <br>
+
+# Funções <br>
+
+ - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/funcoes.py"> funcoes.py </a> Contém todas as funções em python usadas nos experimentos
