@@ -11,6 +11,7 @@ Novamente um experimento de otimização de caixas binárias. Dessa vez o códig
 Esse código também otimiza o problema de caixas binárias, dessa vez usando um **algoritmo genético**. Além disso, ele é capaz de produzir um gráfico que mostra o valor médio da função objetivo da população em função da geração.
 
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.04%20-%20caixas%20nao-binarias.ipynb">Experimento A.04 - Caixas não binárias </a> <br>
+O experimento 4 é muito parecido com o anterior, a diferença é que ele otimiza um problema de caixas não binárias, cujos valores pode ser qualquer número inteiro entre 0 e 100.
 
 # Funções <br>
 
