@@ -1,16 +1,15 @@
-# Template para a disciplina de Redes Neurais e Algoritmos Genéticos
+<h2 align="center"> REDES NEURAIS E ALGORITMOS GENÉTICOS </h2>
 
-Use este template como base para organizar seus experimentos na disciplina de Redes Neurais e Algoritmos Genéticos. 
+<p align="center"><img src="https://user-images.githubusercontent.com/106620307/228858222-39c047cb-b7fb-4e71-ab86-97d5eb0da13d.png"></p>
 
-Lembretes:
+<p align=""> Fonte: <a href="https://xkcd.com/720/"> XKCD </a> </p>
 
-+ Cada notebook deve ter apenas um experimento
-+ Jamais faça importações utilizando o asterisco. Use espaços de nome ou importe apenas o que for usar no seu experimento
-+ Códigos bem formatados são recomendados. Sugestão: use o formatador black. Ele tem uma versão online disponível em https://black.vercel.app
-+ Sempre use nomes claros e representativos para suas funções, classes, métodos e variáveis
-+ Sempre escreva uma docstring nas suas funções, classes e métodos
-+ Funções simples podem ter doscrings em uma linha. As demais funções devem ter docstrings completas
-+ Comente seu código sempre que julgar necessário, principalmente quando o que estiver sendo executado não for trivial
-+ Todos os notebooks devem funcionar corretamente seguindo a ordem de cima para baixo. Evite rodar células fora da ordem para evitar problemas de continuidade no seu experimento (reordene as células caso seja necessário)
-+ Certifique-se que todas as células do seus notebooks foram executadas! Afinal, como você vai realizar seu experimento sem executar as células?
-+ Reescreva os README do seu repositório para guiar o leitor
+## Introdução
+<p align="justify">
+"Algoritmos genéticos e redes neurais são duas técnicas amplamente utilizadas em aprendizado de máquina e inteligência artificial. Os algoritmos genéticos são um método de busca e otimização inspirado no processo evolutivo, onde soluções candidatas são avaliadas e modificadas iterativamente, visando encontrar a melhor solução para um determinado problema. Por outro lado, as redes neurais são modelos computacionais inspirados no funcionamento do cérebro humano, que consistem em camadas de neurônios interconectados capazes de aprender a partir de dados e realizar tarefas complexas, como classificação e previsão. Ambas as técnicas são capazes de lidar com problemas complexos e oferecem diversas aplicações práticas em áreas como ciência dos dados, robótica, visão computacional e jogos." </p>
+GPT, Chat - 2023
+<p align="justify">
+
+
+
+
