@@ -122,6 +122,21 @@ def populacao_cnb(tamanho, n_genes, valor_max_caixa):
     return populacao
 
 
+def populacao_inicial_senha(tamanho, tamanho_senha, letras):
+    """Cria população inicial no problema da senha
+    Args
+      tamanho: tamanho da população.
+      tamanho_senha: inteiro representando o tamanho da senha.
+      letras: letras possíveis de serem sorteadas.
+    Returns:
+      Lista com todos os indivíduos da população no problema da senha.
+    """
+    populacao = []
+    for n in range(tamanho):
+        populacao.append(individuo_senha(tamanho_senha, letras))
+    return populacao
+
+
 def selecao_roleta_max(populacao, fitness):
     """Seleciona indivíduos de uma população usando o metodo da roleta.
     Nota: Apenas funciona para problemas de maximização.
@@ -143,6 +158,40 @@ def selecao_roleta_max(populacao, fitness):
     # fazendo a seleção
     populacao = rd.choices(populacao, weights=fitness_novo, k=len(populacao))
     return populacao
+
+
+def selecao_torneio_min(populacao, fitness, tamanho_torneio=3):
+    """Faz a seleção de uma população usando torneio.
+    Nota: da forma que está implementada, só funciona em problemas de
+    minimização.
+    Args:
+      populacao: população do problema
+      fun_objetivo: função objetivo
+      tamanho_torneio: quantidade de invidiuos que batalham entre si
+    Returns:
+      Individuos selecionados. Lista com os individuos selecionados com mesmo
+      tamanho do argumento `populacao`.
+    """
+    selecionados = []
+
+    par_populacao_fitness = list(zip(populacao, fitness))
+
+    for _ in range(len(populacao)):
+        combatentes = rd.sample(par_populacao_fitness, tamanho_torneio)
+
+        minimo_fitness = float("inf")
+
+        for par_individuo_fitness in combatentes:
+            individuo = par_individuo_fitness[0]
+            fit = par_individuo_fitness[1]
+
+            if fit < minimo_fitness:
+                selecionado = individuo
+                minimo_fitness = fit
+
+        selecionados.append(selecionado)
+
+    return selecionados
 
 
 def cruzamento_ponto_simples(pai, mae):
@@ -192,6 +241,19 @@ def mutacao_cnb(individuo, valor_max_caixa):
     return individuo
 
 
+def mutacao_senha(individuo, letras):
+    """Realiza a mutação de um gene no problema da senha.
+    Args:
+      individuo: uma lista representado um individuo no problema da senha
+      letras: letras possíveis de serem sorteadas.
+    Return:
+      Um individuo (senha) com um gene mutado.
+    """
+    gene = rd.randint(0, len(individuo) - 1)
+    individuo[gene] = gene_letra(letras)
+    return individuo
+
+
 def funcao_objetivo_cb(individuo):
     """Computa a função objetivo no problema das caixas binarias
 
@@ -220,3 +282,37 @@ def funcao_objetivo_pop_cb(populacao):
     for individuo in populacao:
         fobj.append(funcao_objetivo_cb(individuo))
     return fobj
+
+
+def funcao_objetivo_senha(individuo, senha_verdadeira):
+    """Computa a funcao objetivo de um individuo no problema da senha
+    Args:
+      individiuo: lista contendo as letras da senha
+      senha_verdadeira: a senha que você está tentando descobrir
+    Returns:
+      A "distância" entre a senha proposta e a senha verdadeira. Essa distância
+      é medida letra por letra. Quanto mais distante uma letra for da que
+      deveria ser, maior é essa distância.
+    """
+    diferenca = 0
+
+    for letra_candidato, letra_oficial in zip(individuo, senha_verdadeira):
+        diferenca = diferenca + abs(ord(letra_candidato) - ord(letra_oficial))
+
+    return diferenca
+
+
+def funcao_objetivo_pop_senha(populacao, senha_verdadeira):
+    """Computa a funcao objetivo de uma populaçao no problema da senha.
+    Args:
+      populacao: lista com todos os individuos da população
+      senha_verdadeira: a senha que você está tentando descobrir
+    Returns:
+      Lista contendo os valores da métrica de distância entre senhas.
+    """
+    resultado = []
+
+    for individuo in populacao:
+        resultado.append(funcao_objetivo_senha(individuo, senha_verdadeira))
+
+    return resultado
