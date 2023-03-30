@@ -1,4 +1,4 @@
-# Experimentos
+## Experimentos
 
 Os experimentos foram realizados nos notebooks abaixo, que são arquivos **.ipynb** <br>
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.01%20-%20busca%20aleatoria.ipynb">Experimento A.01 - Busca Aleatória </a> <br>
@@ -13,6 +13,9 @@ Esse código também otimiza o problema de caixas binárias, dessa vez usando um
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.04%20-%20caixas%20nao-binarias.ipynb">Experimento A.04 - Caixas não binárias </a> <br>
 O experimento 4 é muito parecido com o anterior, a diferença é que ele otimiza um problema de caixas não binárias, cujos valores pode ser qualquer número inteiro entre 0 e 100.
 
-# Funções <br>
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.05%20-%20descobrindo%20a%20senha.ipynb">Experimento A.05 - Descobrindo a Senha </a> <br>
+Esse experimento utiliza uma algoritmo genético para minimizar o erro ao testar uma senha. Para selecionar os indivíduos que passam para cada geração, é utilizada uma função de seleção por "torneio". 
+
+## Funções <br>
 
  - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/funcoes.py"> funcoes.py </a> Contém todas as funções em python usadas nos experimentos
