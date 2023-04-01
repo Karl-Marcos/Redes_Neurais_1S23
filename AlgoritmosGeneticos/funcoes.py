@@ -316,3 +316,103 @@ def funcao_objetivo_pop_senha(populacao, senha_verdadeira):
         resultado.append(funcao_objetivo_senha(individuo, senha_verdadeira))
 
     return resultado
+
+def liga_ternaria(elementos):
+    '''Gera uma liga ternária a partir de uma lista de possíveis elementos
+    Args: 
+        elementos: Lista com as strings correspondentes aos nomes dos elementos que podem formar uma liga.
+    Returns:
+        dicionário com os elementos e suas quantidades
+    '''
+    elementos_escolhidos = rd.sample(elementos, 3)
+    x = 0; y = 0; z = 0
+    
+    while x < 5 or y<5 or z < 5:
+        x = rd.uniform(5, 100)
+        y = rd.uniform(5, 100) - x
+        z = 100 - x - y
+    xyz = [x,y,z]
+    liga = {}
+    for i in elementos_escolhidos:
+        liga[i] = xyz[elementos_escolhidos.index(i)]
+    return liga
+
+def populacao_inicial_liga(tamanho, elementos):
+    """Cria população inicial no problema da liga ternaria
+    Args
+      tamanho: tamanho da população.
+      elementos: Lista com as strings correspondentes aos nomes dos elementos que podem formar uma liga.
+    Returns:
+      Lista com todos os indivíduos da população no problema da senha.
+    """
+    populacao = []
+    for n in range(tamanho):
+        populacao.append(liga_ternaria(elementos))
+    return populacao
+
+def preco_liga(liga, preco):
+    '''Calcula o preco de uma liga ternaria a partir da lista de preços de cada elemento
+    Args:
+        liga: dicionário com elementos e quantidades
+        preco: dicionario com os precos de cada elemento:
+    Returns:
+        preco da liga
+    '''
+    preco_total = 0
+    
+    for i in liga:
+        preco_total = preco_total + float(liga[i])*float(preco[i])/1000
+    return preco_total
+
+def funcao_objetivo_pop_liga(populacao, preco):
+    """Computa a funcao objetivo de uma populaçao no problema da lista.
+    Args:
+        populacao: lista com todas as ligas da população
+        preco: dicionario com os precos de cada elemento:
+    Returns:
+      Lista contendo os valores de preco das ligas
+    """
+    resultado = []
+
+    for liga in populacao:
+        resultado.append(preco_liga(liga, preco))
+
+    return resultado
+
+
+def selecao_torneio_max(populacao, fitness, tamanho_torneio=3):
+    """Faz a seleção de uma população usando torneio.
+    Nota: da forma que está implementada, só funciona em problemas de
+    maximização.
+    Args:
+      populacao: população do problema
+      fitness: lista com os valores de fitness dos indivíduos
+      tamanho_torneio: quantidade de invidiuos que batalham entre si
+    Returns:
+      Individuos selecionados. Lista com os individuos selecionados com mesmo
+      tamanho do argumento `populacao`.
+    """
+    selecionados = []
+
+    par_populacao_fitness = list(zip(populacao, fitness))
+
+    for _ in range(len(populacao)):
+        combatentes = rd.sample(par_populacao_fitness, tamanho_torneio)
+
+        maximo_fitness = 0
+
+        for par_individuo_fitness in combatentes:
+            individuo = par_individuo_fitness[0]
+            fit = par_individuo_fitness[1]
+
+            if fit > maximo_fitness:
+                selecionado = individuo
+                maximo_fitness = fit
+
+        selecionados.append(selecionado)
+    return selecionados
+
+
+def mutacao(liga, preco):
+    
+    
