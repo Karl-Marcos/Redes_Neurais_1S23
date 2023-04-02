@@ -16,6 +16,10 @@ O experimento 4 é muito parecido com o anterior, a diferença é que ele otimiz
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.05%20-%20descobrindo%20a%20senha.ipynb">Experimento A.05 - Descobrindo a Senha </a> <br>
 Esse experimento utiliza uma algoritmo genético para minimizar o erro ao testar uma senha. Para selecionar os indivíduos que passam para cada geração, é utilizada uma função de seleção por "torneio". 
 
-## Funções <br>
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.09%20-%20liga%20ternaria%20mais%20cara.ipynb">Experimento GA.09 - A liga ternária mais cara do mundo </a> <br>
+Esse experimento utiliza uma algoritmo genético para maximizar o custo de uma liga composta por três elementos químicos.
 
- - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/funcoes.py"> funcoes.py </a> Contém todas as funções em python usadas nos experimentos
+## Arquivos Python <br>
+
+ - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/funcoes.py"> funcoes.py </a> Contém todas as funções em python usadas nos experimentos <br>
+ - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/constantes.py"> constantes.py </a> Contém algumas constantes utilizadas nos experimentos
