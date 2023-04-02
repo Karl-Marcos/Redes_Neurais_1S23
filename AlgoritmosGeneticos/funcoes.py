@@ -7,7 +7,7 @@ import random as rd
 
 
 def gene_cb():
-    """Gera um gene binario para o problema das caixas
+    """Gera um gene binário para o problema das caixas
 
     Return:
         Valor zero ou um
@@ -38,6 +38,18 @@ def gene_letra(letras):
     letra = rd.choice(letras)
     return letra
 
+def gene_liga(elementos):
+    """Gera um "gene" para o problema da liga ternária.
+    Args:
+        elementos: lista de strings dos possíveis elementos para o gene
+    Returns:
+        dicionário contendo um elemento e a quantidade daquele elemento
+    """
+    elemento = rd.choice(elementos)
+    massa = rd.uniform(0, 100)
+    gene = {elemento:massa}
+    return gene
+
 
 def individuo_cb(n):
     """Gera um individuo para o problemas de caixas
@@ -48,9 +60,7 @@ def individuo_cb(n):
     Return:
         Uma lista com n genes, cada um com um valor 0 ou 1
     """
-
     individuo = []
-
     for i in range(n):
         individuo.append(gene_cb())
     return individuo
@@ -81,14 +91,38 @@ def individuo_senha(tamanho_senha, letras):
     Return:
       Lista com n letras
     """
-
     candidato = []
-
     for n in range(tamanho_senha):
         candidato.append(gene_letra(letras))
-
     return candidato
 
+
+def individuo_liga(tamanho_liga, elementos):
+    '''Gera uma liga ternária a partir de uma lista de possíveis elementos
+    Args: 
+        tamanho_liga: quantidade de elementos na liga (será 3 para o problema de liga ternária)
+        elementos: Lista com as strings correspondentes aos nomes dos elementos que podem formar uma liga.
+    Returns:
+        dicionário com os elementos e suas quantidades
+    '''
+    ok = True
+    while ok == True:
+        liga = {}
+        while len(liga) < tamanho_liga:
+            liga.update(gene_liga(elementos))
+        # normalização:
+        norma = sum(liga.values())
+        for k in liga:
+            liga[k] = liga[k]*100/norma
+        # verificando que todos são maires que 5:
+        for i in liga.values():
+            if i >= 5:
+                ok = False #fazer nada
+            else:
+                ok = True
+                break
+    return liga
+    
 
 def populacao_cb(tamanho, n):
     """Cria uma população no problema de caixas binarias
@@ -137,14 +171,27 @@ def populacao_inicial_senha(tamanho, tamanho_senha, letras):
     return populacao
 
 
+def populacao_inicial_liga(tamanho, tamanho_liga, elementos):
+    """Cria população inicial no problema da liga ternária
+    Args
+      tamanho: tamanho da população.
+      tamanho_liga: quantidade de elementos na liga (será 3 para o problema de liga ternária)
+      elementos: Lista com as strings correspondentes aos nomes dos elementos que podem formar uma liga.
+    Returns:
+      Lista com todos os indivíduos da população no problema da senha.
+    """
+    populacao = []
+    for n in range(tamanho):
+        populacao.append(individuo_liga(tamanho_liga, elementos))
+    return populacao
+
+
 def selecao_roleta_max(populacao, fitness):
     """Seleciona indivíduos de uma população usando o metodo da roleta.
     Nota: Apenas funciona para problemas de maximização.
-
     Args:
         populacao: lista com todos os individuos da populacao
         fitness: lista dos valores da funcao objetivo
-
     Returns:
         Populacao dps individuos selecionados
     """
@@ -173,14 +220,10 @@ def selecao_torneio_min(populacao, fitness, tamanho_torneio=3):
       tamanho do argumento `populacao`.
     """
     selecionados = []
-
     par_populacao_fitness = list(zip(populacao, fitness))
-
     for _ in range(len(populacao)):
         combatentes = rd.sample(par_populacao_fitness, tamanho_torneio)
-
         minimo_fitness = float("inf")
-
         for par_individuo_fitness in combatentes:
             individuo = par_individuo_fitness[0]
             fit = par_individuo_fitness[1]
@@ -188,10 +231,37 @@ def selecao_torneio_min(populacao, fitness, tamanho_torneio=3):
             if fit < minimo_fitness:
                 selecionado = individuo
                 minimo_fitness = fit
-
         selecionados.append(selecionado)
-
     return selecionados
+
+
+def selecao_torneio_max(populacao, fitness, tamanho_torneio=3):
+    """Faz a seleção de uma população usando torneio.
+    Nota: da forma que está implementada, só funciona em problemas de
+    maximização.
+    Args:
+      populacao: população do problema
+      fitness: lista com os valores de fitness dos indivíduos
+      tamanho_torneio: quantidade de invidiuos que batalham entre si
+    Returns:
+      Individuos selecionados. Lista com os individuos selecionados com mesmo
+      tamanho do argumento `populacao`.
+    """
+    selecionados = []
+    par_populacao_fitness = list(zip(populacao, fitness))
+    for _ in range(len(populacao)):
+        combatentes = rd.sample(par_populacao_fitness, tamanho_torneio)
+        maximo_fitness = 0
+        for par_individuo_fitness in combatentes:
+            individuo = par_individuo_fitness[0]
+            fit = par_individuo_fitness[1]
+
+            if fit > maximo_fitness:
+                selecionado = individuo
+                maximo_fitness = fit
+        selecionados.append(selecionado)
+    return selecionados
+
 
 
 def cruzamento_ponto_simples(pai, mae):
@@ -205,10 +275,29 @@ def cruzamento_ponto_simples(pai, mae):
         Duas listas: sendo que cada uma representa um filho dos pais que foram os qrgumentos.
     """
     ponto_de_corte = rd.randint(1, len(mae) - 1)
-
     filho1 = pai[:ponto_de_corte] + mae[ponto_de_corte:]
     filho2 = mae[:ponto_de_corte] + pai[ponto_de_corte:]
+    return filho1, filho2
 
+
+def cruzamento_liga(pai, mae):
+    """Operador de cruzamento para duas ligas
+    Args:
+        pai: um dicionário correspondente a um individuo
+        mae: um dicionário correspondente a um individuo
+    Returns:
+        Dois dicionários: sendo que cada um representa um filho dos pais que foram os qrgumentos.
+    """
+    chaves = set(list(pai.keys()) + list(mae.keys()))
+    elementos1 = rd.sample(chaves, len(pai))
+    elementos2 = rd.sample(chaves, len(mae))
+    quantidades1 = list(pai.values())
+    quantidades2 = list(mae.values())
+    filho1, filho2 = {},{}
+    for elemento, quantidade in zip(elementos1, quantidades1):
+        filho1.update({elemento : quantidade})
+    for elemento, quantidade in zip(elementos2, quantidades2):
+        filho2.update({elemento : quantidade})
     return filho1, filho2
 
 
@@ -254,12 +343,67 @@ def mutacao_senha(individuo, letras):
     return individuo
 
 
+def mutacao_elemento_liga(individuo, elementos):
+    """Realiza a mutação de um elemento no problema da liga ternaria.
+    Args:
+      individuo: dicionario corespondente aos elementos e quantidades em uma liga
+      elementos: strings dos possíveis elementos para a liga
+    Return:
+      Um individuo (liga) com um gene mutado.
+    """
+    quantidades = list(individuo.values())
+    indice = rd.randint(0, len(individuo) - 1)
+    elemento = list(individuo.keys())[indice]
+    quantidade = individuo[elemento]
+    del individuo[elemento]
+    while len(individuo)<3:
+        novo_elemento = rd.choice(elementos)
+        individuo.update({novo_elemento:quantidade})
+    k=0
+    for i in individuo:
+        individuo[i] = quantidades[k]
+        k = k+1
+    return individuo
+
+
+def mutacao_quantidades_liga(individuo):
+    """Realiza a mutação das quantidades no problema da liga ternária.
+    Args:
+      individuo: dicionario corespondente aos elementos e quantidades em uma liga
+    Return:
+      Um individuo (liga) com as quantidades mutadas.
+    """
+    elementos = list(individuo.keys())
+    ok = True
+    while ok == True:
+        liga = {}
+        h = 0
+        while len(liga) < len(individuo):
+            liga.update({elementos[h]:rd.uniform(0,100)})
+            h = h+1
+        # normalização:
+        norma = sum(liga.values())
+        for k in liga:
+            liga[k] = liga[k]*100/norma
+        # verificando que todos são maires que 5:
+        for i in liga.values():
+            if i >= 5:
+                ok = False #fazer nada
+            else:
+                ok = True
+                break
+    return liga
+    elementos = list(individuo.keys())
+    individuo = {}
+    for elemento, quantidade in zip(elementos, quantidades):
+        individuo.update({elemento:quantidade})    
+    return individuo
+
+
 def funcao_objetivo_cb(individuo):
     """Computa a função objetivo no problema das caixas binarias
-
     Args:
         individuo: Lista contendo os genes
-
     Return:
         Soma dos genes do individuo
     """
@@ -271,10 +415,8 @@ def funcao_objetivo_cb(individuo):
 
 def funcao_objetivo_pop_cb(populacao):
     """Calcula a função objetivo para todos os individuos da população.
-
     Args:
         populacao: Lista com todos os individuos
-
     Returns:
         Lista com os fitness de cada individuo da populacao
     """
@@ -295,10 +437,8 @@ def funcao_objetivo_senha(individuo, senha_verdadeira):
       deveria ser, maior é essa distância.
     """
     diferenca = 0
-
     for letra_candidato, letra_oficial in zip(individuo, senha_verdadeira):
         diferenca = diferenca + abs(ord(letra_candidato) - ord(letra_oficial))
-
     return diferenca
 
 
@@ -311,44 +451,10 @@ def funcao_objetivo_pop_senha(populacao, senha_verdadeira):
       Lista contendo os valores da métrica de distância entre senhas.
     """
     resultado = []
-
     for individuo in populacao:
         resultado.append(funcao_objetivo_senha(individuo, senha_verdadeira))
-
     return resultado
 
-def liga_ternaria(elementos):
-    '''Gera uma liga ternária a partir de uma lista de possíveis elementos
-    Args: 
-        elementos: Lista com as strings correspondentes aos nomes dos elementos que podem formar uma liga.
-    Returns:
-        dicionário com os elementos e suas quantidades
-    '''
-    elementos_escolhidos = rd.sample(elementos, 3)
-    x = 0; y = 0; z = 0
-    
-    while x < 5 or y<5 or z < 5:
-        x = rd.uniform(5, 100)
-        y = rd.uniform(5, 100) - x
-        z = 100 - x - y
-    xyz = [x,y,z]
-    liga = {}
-    for i in elementos_escolhidos:
-        liga[i] = xyz[elementos_escolhidos.index(i)]
-    return liga
-
-def populacao_inicial_liga(tamanho, elementos):
-    """Cria população inicial no problema da liga ternaria
-    Args
-      tamanho: tamanho da população.
-      elementos: Lista com as strings correspondentes aos nomes dos elementos que podem formar uma liga.
-    Returns:
-      Lista com todos os indivíduos da população no problema da senha.
-    """
-    populacao = []
-    for n in range(tamanho):
-        populacao.append(liga_ternaria(elementos))
-    return populacao
 
 def preco_liga(liga, preco):
     '''Calcula o preco de uma liga ternaria a partir da lista de preços de cada elemento
@@ -359,10 +465,10 @@ def preco_liga(liga, preco):
         preco da liga
     '''
     preco_total = 0
-    
     for i in liga:
         preco_total = preco_total + float(liga[i])*float(preco[i])/1000
     return preco_total
+
 
 def funcao_objetivo_pop_liga(populacao, preco):
     """Computa a funcao objetivo de uma populaçao no problema da lista.
@@ -373,46 +479,6 @@ def funcao_objetivo_pop_liga(populacao, preco):
       Lista contendo os valores de preco das ligas
     """
     resultado = []
-
     for liga in populacao:
         resultado.append(preco_liga(liga, preco))
-
     return resultado
-
-
-def selecao_torneio_max(populacao, fitness, tamanho_torneio=3):
-    """Faz a seleção de uma população usando torneio.
-    Nota: da forma que está implementada, só funciona em problemas de
-    maximização.
-    Args:
-      populacao: população do problema
-      fitness: lista com os valores de fitness dos indivíduos
-      tamanho_torneio: quantidade de invidiuos que batalham entre si
-    Returns:
-      Individuos selecionados. Lista com os individuos selecionados com mesmo
-      tamanho do argumento `populacao`.
-    """
-    selecionados = []
-
-    par_populacao_fitness = list(zip(populacao, fitness))
-
-    for _ in range(len(populacao)):
-        combatentes = rd.sample(par_populacao_fitness, tamanho_torneio)
-
-        maximo_fitness = 0
-
-        for par_individuo_fitness in combatentes:
-            individuo = par_individuo_fitness[0]
-            fit = par_individuo_fitness[1]
-
-            if fit > maximo_fitness:
-                selecionado = individuo
-                maximo_fitness = fit
-
-        selecionados.append(selecionado)
-    return selecionados
-
-
-def mutacao(liga, preco):
-    
-    
