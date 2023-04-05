@@ -2,8 +2,41 @@
 
 import random as rd
 
-
 # Funções:
+
+def distancia_entre_dois_pontos(a, b):
+    """Computa a distância Euclidiana entre dois pontos em R^2
+    Args:
+      a: lista contendo as coordenadas x e y de um ponto.
+      b: lista contendo as coordenadas x e y de um ponto.
+    Returns:
+      Distância entre as coordenadas dos pontos `a` e `b`.
+    """
+    x1 = a[0]
+    x2 = b[0]
+    y1 = a[1]
+    y2 = b[1]
+    dist = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** (1 / 2)
+    return dist
+
+
+def cria_cidades(n):
+    """Cria um dicionário aleatório de cidades com suas posições (x,y).
+    Args:
+      n: inteiro positivo que é o número de cidades que serão visitadas pelo caixeiro.
+    Returns:
+      Dicionário contendo o nome das cidades como chaves e a coordenada no plano
+      cartesiano das cidades como valores.
+    """
+    cidades = {}
+    for i in range(n):
+        cidades[f"Cidade {i}"] = (random.random(), random.random())
+    return cidades
+
+
+###############################################################################
+#                                    Genes                                    #
+###############################################################################
 
 
 def gene_cb():
@@ -38,6 +71,7 @@ def gene_letra(letras):
     letra = rd.choice(letras)
     return letra
 
+
 def gene_liga(elementos):
     """Gera um "gene" para o problema da liga ternária.
     Args:
@@ -49,6 +83,11 @@ def gene_liga(elementos):
     massa = rd.uniform(0, 100)
     gene = {elemento:massa}
     return gene
+
+
+###############################################################################
+#                                  Indivíduos                                 #
+###############################################################################
 
 
 def individuo_cb(n):
@@ -122,6 +161,26 @@ def individuo_liga(tamanho_liga, elementos):
                 ok = True
                 break
     return liga
+
+
+def individuo_cv(cidades):
+    """Sorteia um caminho possível no problema do caixeiro viajante
+
+    Args:
+      cidades:
+        Dicionário onde as chaves são os nomes das cidades e os valores são as
+        coordenadas das cidades.
+
+    Return:
+      Retorna uma lista de nomes de cidades formando um caminho onde visitamos
+      cada cidade apenas uma vez.
+    """
+    pass
+
+
+###############################################################################
+#                                  População                                  #
+###############################################################################
     
 
 def populacao_cb(tamanho, n):
@@ -186,6 +245,31 @@ def populacao_inicial_liga(tamanho, tamanho_liga, elementos):
     return populacao
 
 
+def populacao_inicial_cv(tamanho, cidades):
+    """Cria população inicial no problema do caixeiro viajante.
+
+    Args
+      tamanho:
+        Tamanho da população.
+      cidades:
+        Dicionário onde as chaves são os nomes das cidades e os valores são as
+        coordenadas das cidades.
+
+    Returns:
+      Lista com todos os indivíduos da população no problema do caixeiro
+      viajante.
+    """
+    populacao = []
+    for _ in range(tamanho):
+        populacao.append(individuo_cv(cidades))
+    return populacao
+
+
+###############################################################################
+#                                   Seleção                                   #
+###############################################################################
+
+
 def selecao_roleta_max(populacao, fitness):
     """Seleciona indivíduos de uma população usando o metodo da roleta.
     Nota: Apenas funciona para problemas de maximização.
@@ -227,7 +311,6 @@ def selecao_torneio_min(populacao, fitness, tamanho_torneio=3):
         for par_individuo_fitness in combatentes:
             individuo = par_individuo_fitness[0]
             fit = par_individuo_fitness[1]
-
             if fit < minimo_fitness:
                 selecionado = individuo
                 minimo_fitness = fit
@@ -255,7 +338,6 @@ def selecao_torneio_max(populacao, fitness, tamanho_torneio=3):
         for par_individuo_fitness in combatentes:
             individuo = par_individuo_fitness[0]
             fit = par_individuo_fitness[1]
-
             if fit > maximo_fitness:
                 selecionado = individuo
                 maximo_fitness = fit
@@ -263,14 +345,16 @@ def selecao_torneio_max(populacao, fitness, tamanho_torneio=3):
     return selecionados
 
 
+###############################################################################
+#                                  Cruzamento                                 #
+###############################################################################
+
 
 def cruzamento_ponto_simples(pai, mae):
     """Operador de cruzamento de ponto simples
     Args:
         pai: uma lista correspondente a um individuo
         mae: uma lista correspondente a um individuo
-
-
     Returns:
         Duas listas: sendo que cada uma representa um filho dos pais que foram os qrgumentos.
     """
@@ -299,6 +383,33 @@ def cruzamento_liga(pai, mae):
     for elemento, quantidade in zip(elementos2, quantidades2):
         filho2.update({elemento : quantidade})
     return filho1, filho2
+
+
+def cruzamento_ordenado(pai, mae):
+    """Operador de cruzamento ordenado.
+
+    Neste cruzamento, os filhos mantém os mesmos genes que seus pais tinham,
+    porém em uma outra ordem. Trata-se de um tipo de cruzamento útil para
+    problemas onde a ordem dos genes é importante e não podemos alterar os genes
+    em si. É um cruzamento que pode ser usado no problema do caixeiro viajante.
+
+    Ver pág. 37 do livro do Wirsansky.
+
+    Args:
+      pai: uma lista representando um individuo
+      mae : uma lista representando um individuo
+
+    Returns:
+      Duas listas, sendo que cada uma representa um filho dos pais que foram os
+      argumentos. Estas listas mantém os genes originais dos pais, porém altera
+      a ordem deles
+    """
+    pass
+
+
+###############################################################################
+#                                   Mutação                                   #
+###############################################################################
 
 
 def mutacao_cb(individuo):
@@ -400,6 +511,24 @@ def mutacao_quantidades_liga(individuo):
     return individuo
 
 
+def mutacao_de_troca(individuo):
+    """Troca o valor de dois genes.
+
+    Args:
+      individuo: uma lista representado um individuo.
+
+    Return:
+      O indivíduo recebido como argumento, porém com dois dos seus genes
+      trocados de posição.
+    """
+    pass
+
+
+###############################################################################
+#                         Função objetivo - indivíduos                        #
+###############################################################################
+
+
 def funcao_objetivo_cb(individuo):
     """Computa a função objetivo no problema das caixas binarias
     Args:
@@ -411,19 +540,6 @@ def funcao_objetivo_cb(individuo):
     for i in individuo:
         s = s + i
     return s
-
-
-def funcao_objetivo_pop_cb(populacao):
-    """Calcula a função objetivo para todos os individuos da população.
-    Args:
-        populacao: Lista com todos os individuos
-    Returns:
-        Lista com os fitness de cada individuo da populacao
-    """
-    fobj = []
-    for individuo in populacao:
-        fobj.append(funcao_objetivo_cb(individuo))
-    return fobj
 
 
 def funcao_objetivo_senha(individuo, senha_verdadeira):
@@ -442,20 +558,6 @@ def funcao_objetivo_senha(individuo, senha_verdadeira):
     return diferenca
 
 
-def funcao_objetivo_pop_senha(populacao, senha_verdadeira):
-    """Computa a funcao objetivo de uma populaçao no problema da senha.
-    Args:
-      populacao: lista com todos os individuos da população
-      senha_verdadeira: a senha que você está tentando descobrir
-    Returns:
-      Lista contendo os valores da métrica de distância entre senhas.
-    """
-    resultado = []
-    for individuo in populacao:
-        resultado.append(funcao_objetivo_senha(individuo, senha_verdadeira))
-    return resultado
-
-
 def preco_liga(liga, preco):
     '''Calcula o preco de uma liga ternaria a partir da lista de preços de cada elemento
     Args:
@@ -468,6 +570,59 @@ def preco_liga(liga, preco):
     for i in liga:
         preco_total = preco_total + float(liga[i])*float(preco[i])/1000
     return preco_total
+
+
+
+def funcao_objetivo_cv(individuo, cidades):
+    """Computa a funcao objetivo de um individuo no problema do caixeiro viajante.
+
+    Args:
+      individiuo:
+        Lista contendo a ordem das cidades que serão visitadas
+      cidades:
+        Dicionário onde as chaves são os nomes das cidades e os valores são as
+        coordenadas das cidades.
+
+    Returns:
+      A distância percorrida pelo caixeiro seguindo o caminho contido no
+      `individuo`. Lembrando que após percorrer todas as cidades em ordem, o
+      caixeiro retorna para a cidade original de onde começou sua viagem.
+    """
+    distancia = 0
+    # preencher o código
+    return distancia
+
+
+###############################################################################
+#                         Função objetivo - população                         #
+###############################################################################
+
+
+def funcao_objetivo_pop_cb(populacao):
+    """Calcula a função objetivo para todos os individuos da população.
+    Args:
+        populacao: Lista com todos os individuos
+    Returns:
+        Lista com os fitness de cada individuo da populacao
+    """
+    fobj = []
+    for individuo in populacao:
+        fobj.append(funcao_objetivo_cb(individuo))
+    return fobj
+
+
+def funcao_objetivo_pop_senha(populacao, senha_verdadeira):
+    """Computa a funcao objetivo de uma populaçao no problema da senha.
+    Args:
+      populacao: lista com todos os individuos da população
+      senha_verdadeira: a senha que você está tentando descobrir
+    Returns:
+      Lista contendo os valores da métrica de distância entre senhas.
+    """
+    resultado = []
+    for individuo in populacao:
+        resultado.append(funcao_objetivo_senha(individuo, senha_verdadeira))
+    return resultado
 
 
 def funcao_objetivo_pop_liga(populacao, preco):
