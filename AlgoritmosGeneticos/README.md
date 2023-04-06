@@ -16,6 +16,12 @@ O experimento 4 é muito parecido com o anterior, a diferença é que ele otimiz
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.05%20-%20descobrindo%20a%20senha.ipynb">Experimento A.05 - Descobrindo a Senha </a> <br>
 Esse experimento utiliza uma algoritmo genético para minimizar o erro ao testar uma senha. Para selecionar os indivíduos que passam para cada geração, é utilizada uma função de seleção por "torneio". 
 
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.06%20-%20o%20caixeiro%20viajante.ipynb">Experimento A.06 - O caixeiro viajante </a> <br>
+Esse trata de um problema NP-difícil conhecido como "o caixeiro viajante". Utilizamos um algoritmo genético que acha soluções para esse problema. 
+
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.06%20-%20Himmelblau%20e%20sua%20funcao.ipynb">Experimento GA.06 - Himmelblau e sua função </a> <br>
+Esse experimento trata de minimizar a famosa função de Himmelblau utilizando um algoritmo genético
+
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.09%20-%20liga%20ternaria%20mais%20cara.ipynb">Experimento GA.09 - A liga ternária mais cara do mundo </a> <br>
 Esse experimento utiliza uma algoritmo genético para maximizar o custo de uma liga composta por três elementos químicos.
 
