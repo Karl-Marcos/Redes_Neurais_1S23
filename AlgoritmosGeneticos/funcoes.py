@@ -30,7 +30,7 @@ def cria_cidades(n):
     """
     cidades = {}
     for i in range(n):
-        cidades[f"Cidade {i}"] = (random.random(), random.random())
+        cidades[f"Cidade {i}"] = (rd.random(), rd.random())
     return cidades
 
 
@@ -165,17 +165,28 @@ def individuo_liga(tamanho_liga, elementos):
 
 def individuo_cv(cidades):
     """Sorteia um caminho possível no problema do caixeiro viajante
-
     Args:
-      cidades:
-        Dicionário onde as chaves são os nomes das cidades e os valores são as
+        cidades: Dicionário onde as chaves são os nomes das cidades e os valores são as
         coordenadas das cidades.
-
     Return:
-      Retorna uma lista de nomes de cidades formando um caminho onde visitamos
-      cada cidade apenas uma vez.
+        lista de nomes de cidades formando um caminho válido.
     """
-    pass
+    individuo = list(cidades.keys())
+    rd.shuffle(individuo)
+    return individuo
+
+
+def individuo_hb(xlim, ylim):
+    """Gera um ponto (x,y) para o problema da função de Himmelblau
+    Args:
+        xlim: lista com limites inferior e superior de x
+        ylim: lista com limites inferior e superior de y
+    Returns:
+        lista com dois valores correspondendo a x e y
+    """
+    x = rd.uniform(xlim[0], xlim[1])
+    y = rd.uniform(ylim[0], ylim[1])
+    return [x, y]
 
 
 ###############################################################################
@@ -185,11 +196,9 @@ def individuo_cv(cidades):
 
 def populacao_cb(tamanho, n):
     """Cria uma população no problema de caixas binarias
-
     Args:
         n: numero de genes
         tamanho: numero de individuos
-
     Returns:
         Uma lista onde cada item é um individuo
     """
@@ -240,28 +249,39 @@ def populacao_inicial_liga(tamanho, tamanho_liga, elementos):
       Lista com todos os indivíduos da população no problema da senha.
     """
     populacao = []
-    for n in range(tamanho):
+    for _ in range(tamanho):
         populacao.append(individuo_liga(tamanho_liga, elementos))
     return populacao
 
 
 def populacao_inicial_cv(tamanho, cidades):
     """Cria população inicial no problema do caixeiro viajante.
-
     Args
-      tamanho:
-        Tamanho da população.
-      cidades:
-        Dicionário onde as chaves são os nomes das cidades e os valores são as
+        tamanho: Tamanho da população.
+        cidades: Dicionário onde as chaves são os nomes das cidades e os valores são as
         coordenadas das cidades.
-
     Returns:
-      Lista com todos os indivíduos da população no problema do caixeiro
-      viajante.
+        Lista com todos os indivíduos da população no problema do caixeiro
+        viajante.
     """
     populacao = []
     for _ in range(tamanho):
         populacao.append(individuo_cv(cidades))
+    return populacao
+
+
+def populacao_inicial_hb(tamanho, xlim, ylim):
+    """Cria população inicial para o problema da função de Himmelblau
+    Args: 
+        tamanho: tamanho da população
+        xlim: lista com limites inferior e superior de x
+        ylim: lista com limites inferior e superior de y
+    Returns:
+        população que é uma lista de pontos (x,y)
+    """
+    populacao = []
+    for n in range(tamanho):
+        populacao.append(individuo_hb(xlim, ylim))
     return populacao
 
 
@@ -404,8 +424,18 @@ def cruzamento_ordenado(pai, mae):
       argumentos. Estas listas mantém os genes originais dos pais, porém altera
       a ordem deles
     """
-    pass
-
+    corte1 = rd.randint(0, len(pai)-2)
+    corte2 = rd.randint(corte1+1, len(pai)-1)
+    filho1 = pai[corte1:corte2]
+    for gene in mae:
+        if gene not in filho1:
+            filho1.append(gene)
+    filho2 = mae[corte1:corte2]
+    for gene in pai:
+        if gene not in filho2:
+            filho2.append(gene)
+    return filho1, filho2
+    
 
 ###############################################################################
 #                                   Mutação                                   #
@@ -414,10 +444,8 @@ def cruzamento_ordenado(pai, mae):
 
 def mutacao_cb(individuo):
     """Realiza uma mutação em um individuo para o problema de caixas binárias
-
     Args:
         individuo: individuo onde vai ocorrer a mutacao
-
     Returns:
         individuo após a mutação
     """
@@ -513,15 +541,33 @@ def mutacao_quantidades_liga(individuo):
 
 def mutacao_de_troca(individuo):
     """Troca o valor de dois genes.
-
     Args:
       individuo: uma lista representado um individuo.
-
     Return:
       O indivíduo recebido como argumento, porém com dois dos seus genes
       trocados de posição.
     """
-    pass
+    indices = list(range(len(individuo)))
+    lista_sorteada = rd.sample(indices, k=2)
+    indice1 = lista_sorteada[0]
+    indice2 = lista_sorteada[1]
+    individuo_mutado = individuo.copy()
+    individuo_mutado[indice1] = individuo[indice2]
+    individuo_mutado[indice2] = individuo[indice1]
+    return individuo_mutado
+
+
+def mutacao_hb(individuo, step_maximo):
+    """Realiza mutação em um ponto (x,y) da função de Himmelblau.
+    Args:
+        individuo: lista que corresponde a um ponto (x,y)
+        step_maximo: distância máxima que o ponto pode ser mutado, em x ou em y
+    Returns: 
+        individuo mutado
+    """
+    gene = rd.randint(0, len(individuo) - 1)
+    individuo[gene] = rd.uniform(individuo[gene] - step_maximo, individuo[gene] + step_maximo)
+    return individuo
 
 
 ###############################################################################
@@ -575,22 +621,37 @@ def preco_liga(liga, preco):
 
 def funcao_objetivo_cv(individuo, cidades):
     """Computa a funcao objetivo de um individuo no problema do caixeiro viajante.
-
     Args:
       individiuo:
         Lista contendo a ordem das cidades que serão visitadas
       cidades:
         Dicionário onde as chaves são os nomes das cidades e os valores são as
         coordenadas das cidades.
-
     Returns:
       A distância percorrida pelo caixeiro seguindo o caminho contido no
       `individuo`. Lembrando que após percorrer todas as cidades em ordem, o
       caixeiro retorna para a cidade original de onde começou sua viagem.
     """
     distancia = 0
+    k = 0
+    while k<len(individuo):
+        distancia += distancia_entre_dois_pontos(cidades[individuo[k-1]], cidades[individuo[k]])
+        k+=1
     # preencher o código
     return distancia
+
+
+def himmelblau(individuo):
+    """Computa a função de Himmelblau em um ponto (x,y)
+    Args: 
+        individuo: lista com x e y
+    Returns:
+        Valor da função de Himmelblau no ponto
+    """
+    x = individuo[0]
+    y = individuo[1]
+    z = (x**2 + y - 11)**2 + (x + y**2 - 7)**2
+    return z
 
 
 ###############################################################################
@@ -636,4 +697,30 @@ def funcao_objetivo_pop_liga(populacao, preco):
     resultado = []
     for liga in populacao:
         resultado.append(preco_liga(liga, preco))
+    return resultado
+
+
+def funcao_objetivo_pop_cv(populacao, cidades):
+    """Calcula a função objetivo para todos os individuos da população.
+    Args:
+        populacao: Lista com todos os individuos
+    Returns:
+        Lista com os fitness de cada individuo da populacao
+    """
+    fobj = []
+    for individuo in populacao:
+        fobj.append(funcao_objetivo_cv(individuo, cidades))
+    return fobj
+
+
+def funcao_objetivo_pop_hb(populacao):
+    """Computa a funcao objetivo de uma populaçao no problema de Himmelblau.
+    Args:
+        populacao: lista com todas as ligas da população.
+    Returns:
+      Lista contendo os valores da função de Himmelblau dos pontos.
+    """
+    resultado = []
+    for individuo in populacao:
+        resultado.append(himmelblau(individuo))
     return resultado
