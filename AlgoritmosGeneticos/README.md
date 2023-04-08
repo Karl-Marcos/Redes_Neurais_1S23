@@ -19,6 +19,9 @@ Esse experimento utiliza uma algoritmo genético para minimizar o erro ao testar
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.06%20-%20o%20caixeiro%20viajante.ipynb">Experimento A.06 - O caixeiro viajante </a> <br>
 Esse trata de um problema NP-difícil conhecido como "o caixeiro viajante". Utilizamos um algoritmo genético que acha soluções para esse problema. 
 
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.03%20-%20caixeiro%20com%20gasolina%20infinita.ipynb">Experimento GA.03 - O caixeiro com gasolina infinita </a> <br>
+Esse é muito parecido com o do caixeiro viajante, a diferença é que o objetivo é maximizar a distância percorrida, ao invés de minimizar.
+
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.06%20-%20Himmelblau%20e%20sua%20funcao.ipynb">Experimento GA.06 - Himmelblau e sua função </a> <br>
 Esse experimento trata de minimizar a famosa função de Himmelblau utilizando um algoritmo genético
 
