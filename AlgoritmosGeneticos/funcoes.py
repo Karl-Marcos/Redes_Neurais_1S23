@@ -20,6 +20,24 @@ def distancia_entre_dois_pontos(a, b):
     return dist
 
 
+def distancia_entre_dois_pontos_3d(a, b):
+    """Computa a distância Euclidiana entre dois pontos em R^3
+    Args:
+      a: lista contendo as coordenadas x, y e z de um ponto.
+      b: lista contendo as coordenadas x, y e z de um ponto.
+    Returns:
+      Distância entre as coordenadas dos pontos `a` e `b`.
+    """
+    x1 = a[0]
+    x2 = b[0]
+    y1 = a[1]
+    y2 = b[1]
+    z1 = a[2]
+    z2 = b[2]
+    dist = ((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2) ** (1 / 2)
+    return dist
+
+
 def cria_cidades(n):
     """Cria um dicionário aleatório de cidades com suas posições (x,y).
     Args:
@@ -32,6 +50,33 @@ def cria_cidades(n):
     for i in range(n):
         cidades[f"Cidade {i}"] = (rd.random(), rd.random())
     return cidades
+
+
+def cria_cidades_espaciais(n):
+    """Cria um dicionário aleatório de estações espaciais com suas posições (x,y,z).
+    Args:
+      n: inteiro positivo que é o número de cidades que serão visitadas pelo caixeiro.
+    Returns:
+      Dicionário contendo o nome das cidades como chaves e a coordenada no espaço
+      cartesiano das cidades como valores.
+    """
+    cidades = {}
+    for i in range(n):
+        cidades[f"Cidade {i}"] = (rd.random(), rd.random(),rd.random())
+    return cidades
+
+
+def cria_itens(n):
+    """Gera um conjunto de possíveis itens e seus pesos e massas para o problema da mochila.
+    Args: 
+        n: inteiro positivo que é o número de itens possíveis
+    Returns:
+        itens: dicionário com nomes dos itens como chaves e lista com preço e peso como valores
+    """
+    itens = {}
+    for i in range(n):
+        itens[f"item {i}"] = (10*rd.random(), 10*rd.random())
+    return itens
 
 
 ###############################################################################
@@ -189,6 +234,14 @@ def individuo_hb(xlim, ylim):
     return [x, y]
 
 
+def individuo_mochila(itens):
+    individuo = []
+    for i in list(itens.keys()):
+        if rd.randint(0,1) == 1:
+            individuo.append(i)
+    return individuo
+
+
 ###############################################################################
 #                                  População                                  #
 ###############################################################################
@@ -285,6 +338,13 @@ def populacao_inicial_hb(tamanho, xlim, ylim):
     return populacao
 
 
+def populacao_inicial_mochila(tamanho, itens):
+    populacao = []
+    for n in range(tamanho):
+        populacao.append(individuo_mochila(itens))
+    return populacao    
+
+
 ###############################################################################
 #                                   Seleção                                   #
 ###############################################################################
@@ -354,7 +414,7 @@ def selecao_torneio_max(populacao, fitness, tamanho_torneio=3):
     par_populacao_fitness = list(zip(populacao, fitness))
     for _ in range(len(populacao)):
         combatentes = rd.sample(par_populacao_fitness, tamanho_torneio)
-        maximo_fitness = 0
+        maximo_fitness = -float("inf")
         for par_individuo_fitness in combatentes:
             individuo = par_individuo_fitness[0]
             fit = par_individuo_fitness[1]
@@ -434,6 +494,14 @@ def cruzamento_ordenado(pai, mae):
     for gene in pai:
         if gene not in filho2:
             filho2.append(gene)
+    return filho1, filho2
+
+
+def cruzamento_subconjunto(pai, mae):
+    elementos = list(set(pai + mae))
+    rd.shuffle(elementos)
+    filho1 = rd.sample(elementos, len(pai))
+    filho2 = rd.sample(elementos, len(mae))
     return filho1, filho2
     
 
@@ -570,6 +638,24 @@ def mutacao_hb(individuo, step_maximo):
     return individuo
 
 
+def mutacao_mochila(individuo, itens):
+    """
+    """
+    itens_disponiveis = []
+    for i in list(itens.keys()):
+        if i not in individuo:
+            itens_disponiveis.append(i)
+    tipo = rd.randint(0,2)
+    if tipo == 0:
+        individuo.remove(individuo[rd.randint(0, len(individuo)-1)])
+    elif tipo == 1:
+        individuo.append(itens_disponiveis[rd.randint(0, len(itens_disponiveis)-1)])
+    else: 
+        individuo.remove(individuo[rd.randint(0, len(individuo)-1)])
+        individuo.append(itens_disponiveis[rd.randint(0, len(itens_disponiveis)-1)])
+    return individuo
+
+
 ###############################################################################
 #                         Função objetivo - indivíduos                        #
 ###############################################################################
@@ -641,6 +727,28 @@ def funcao_objetivo_cv(individuo, cidades):
     return distancia
 
 
+def funcao_objetivo_cva(individuo, cidades):
+    """Computa a funcao objetivo de um individuo no problema do caixeiro viajante astronauta.
+    Args:
+      individiuo:
+        Lista contendo a ordem das cidades que serão visitadas
+      cidades:
+        Dicionário onde as chaves são os nomes das cidades e os valores são as
+        coordenadas (x,y,z) das cidades.
+    Returns:
+      A distância percorrida pelo caixeiro seguindo o caminho contido no
+      `individuo`. Lembrando que após percorrer todas as cidades em ordem, o
+      caixeiro retorna para a cidade original de onde começou sua viagem.
+    """
+    distancia = 0
+    k = 0
+    while k<len(individuo):
+        distancia += distancia_entre_dois_pontos_3d(cidades[individuo[k-1]], cidades[individuo[k]])
+        k+=1
+    # preencher o código
+    return distancia
+
+
 def himmelblau(individuo):
     """Computa a função de Himmelblau em um ponto (x,y)
     Args: 
@@ -654,6 +762,23 @@ def himmelblau(individuo):
     return z
 
 
+def funcao_objetivo_mochila(individuo, itens, p):
+    """
+    """
+    pesos = []
+    for i in individuo:
+        peso = itens[i][1]
+        pesos.append(peso)
+    if sum(pesos)> p:
+        return 0
+    else:
+        valores = []
+        for i in individuo:
+            valor = itens[i][0]
+            valores.append(valor)
+        return sum(valores)
+    
+    
 ###############################################################################
 #                         Função objetivo - população                         #
 ###############################################################################
@@ -713,6 +838,19 @@ def funcao_objetivo_pop_cv(populacao, cidades):
     return fobj
 
 
+def funcao_objetivo_pop_cva(populacao, cidades):
+    """Calcula a função objetivo para todos os individuos da população.
+    Args:
+        populacao: Lista com todos os individuos
+    Returns:
+        Lista com os fitness de cada individuo da populacao
+    """
+    fobj = []
+    for individuo in populacao:
+        fobj.append(funcao_objetivo_cva(individuo, cidades))
+    return fobj
+
+
 def funcao_objetivo_pop_hb(populacao):
     """Computa a funcao objetivo de uma populaçao no problema de Himmelblau.
     Args:
@@ -723,4 +861,13 @@ def funcao_objetivo_pop_hb(populacao):
     resultado = []
     for individuo in populacao:
         resultado.append(himmelblau(individuo))
+    return resultado
+
+
+def funcao_objetivo_pop_mochila(populacao, itens, p):
+    """
+    """
+    resultado = []
+    for individuo in populacao:
+        resultado.append(funcao_objetivo_mochila(individuo, itens, p))
     return resultado
