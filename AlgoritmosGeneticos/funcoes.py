@@ -646,11 +646,12 @@ def mutacao_mochila(individuo, itens):
         if i not in individuo:
             itens_disponiveis.append(i)
     tipo = rd.randint(0,2)
-    if tipo == 0:
-        individuo.remove(individuo[rd.randint(0, len(individuo)-1)])
-    elif tipo == 1:
+    if tipo == 0 or len(itens_disponiveis) == 0:
+        if len(individuo) > 1:
+            individuo.remove(individuo[rd.randint(0, len(individuo)-1)])
+    elif tipo == 1 and len(itens_disponiveis) > 0:
         individuo.append(itens_disponiveis[rd.randint(0, len(itens_disponiveis)-1)])
-    else: 
+    elif len(itens_disponiveis) > 0: 
         individuo.remove(individuo[rd.randint(0, len(individuo)-1)])
         individuo.append(itens_disponiveis[rd.randint(0, len(itens_disponiveis)-1)])
     return individuo
