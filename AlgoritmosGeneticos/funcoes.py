@@ -235,6 +235,12 @@ def individuo_hb(xlim, ylim):
 
 
 def individuo_mochila(itens):
+    """Gera um indivíduo para o problema da mochila.
+    Args:
+        itens: Dicionário contendo os itens possíveis
+    Returns:
+        Lista dos itens contidos na mochila
+    """
     individuo = []
     for i in list(itens.keys()):
         if rd.randint(0,1) == 1:
@@ -339,6 +345,13 @@ def populacao_inicial_hb(tamanho, xlim, ylim):
 
 
 def populacao_inicial_mochila(tamanho, itens):
+    """Cria população inicial para o problema da mochila
+    Args: 
+        tamanho: tamanho da população
+        itens: Dicionário contendo os itens possíveis
+    Returns:
+        população que é uma lista de indivíduos (mochilas)
+    """
     populacao = []
     for n in range(tamanho):
         populacao.append(individuo_mochila(itens))
@@ -467,7 +480,7 @@ def cruzamento_liga(pai, mae):
 
 def cruzamento_ordenado(pai, mae):
     """Operador de cruzamento ordenado.
-
+    
     Neste cruzamento, os filhos mantém os mesmos genes que seus pais tinham,
     porém em uma outra ordem. Trata-se de um tipo de cruzamento útil para
     problemas onde a ordem dos genes é importante e não podemos alterar os genes
@@ -498,6 +511,15 @@ def cruzamento_ordenado(pai, mae):
 
 
 def cruzamento_subconjunto(pai, mae):
+    """Operador de cruzamento para listas onde a ordem não importa
+    Args:
+      pai: uma lista representando um individuo
+      mae : uma lista representando um individuo
+    Returns:
+      Duas listas, sendo que cada uma representa um filho dos pais
+      que foram osargumentos. Uma possui o mesmo tamanho que o pai 
+      e a outra o mesmo tamanho que a mãe
+    """
     elementos = list(set(pai + mae))
     rd.shuffle(elementos)
     filho1 = rd.sample(elementos, len(pai))
@@ -639,7 +661,12 @@ def mutacao_hb(individuo, step_maximo):
 
 
 def mutacao_mochila(individuo, itens):
-    """
+    """Operador de mutação para a mochila
+    Args:
+        indiviuo: lista de itens na mochila
+        itens: dicionário dos itens possíveis
+    Returns:
+        individuo mutado
     """
     itens_disponiveis = []
     for i in list(itens.keys()):
@@ -764,7 +791,16 @@ def himmelblau(individuo):
 
 
 def funcao_objetivo_mochila(individuo, itens, p):
-    """
+    """Computa a função objetivo de uma muchila, que é a soma
+    dos valores dos itens, mas é 0 caso o pesoseja maior que um
+    limite
+    Args:
+        individuo: lista dos itens na mochila
+        itens: dicionário dos itens possíveis
+        p: limite de peso que a mochila aguenta
+    Returns:
+        número função objetivo da mochila
+
     """
     pesos = []
     for i in individuo:
@@ -866,7 +902,13 @@ def funcao_objetivo_pop_hb(populacao):
 
 
 def funcao_objetivo_pop_mochila(populacao, itens, p):
-    """
+    """Computa a função objetivo de uma população de mochilas
+    Args:
+        populacao: lista com todas as mochilas da população
+        itens: dicionário dos itens possíveis
+        p: limite de peso que a mochila aguenta
+    Returns:
+        lista dos números função objetivo das mochilas
     """
     resultado = []
     for individuo in populacao:
