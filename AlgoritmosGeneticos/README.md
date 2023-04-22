@@ -25,6 +25,9 @@ Aqui usamos algoritmo genético para resolver o problema da mochila. É um tipo 
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.03%20-%20caixeiro%20com%20gasolina%20infinita.ipynb">Experimento GA.03 - O caixeiro com gasolina infinita </a> <br>
 Esse é muito parecido com o do caixeiro viajante, a diferença é que o objetivo é maximizar a distância percorrida, ao invés de minimizar.
 
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.04%20-%20caixeiro%20astronauta.ipynb">Experimento GA.04 - O caixeiro astronauta </a> <br>
+Esse também é muito parecido com o do caixeiro viajante, a diferença é que, ao invés de cidades em duas dimensões, temos "estações espaciais", com coordenadas (x,y,z).
+
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.06%20-%20Himmelblau%20e%20sua%20funcao.ipynb">Experimento GA.06 - Himmelblau e sua função </a> <br>
 Esse experimento trata de minimizar a famosa função de Himmelblau utilizando um algoritmo genético
 
