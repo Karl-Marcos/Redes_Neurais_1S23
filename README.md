@@ -26,5 +26,5 @@ Esse repositório é dedicado às atividades da disciplina do terceiro semestre,
 Nos experimentos <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20A.06%20-%20o%20caixeiro%20viajante.ipynb"> o caixeiro viajante </a> e <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.03%20-%20caixeiro%20com%20gasolina%20infinita.ipynb"> o caixeiro com gasolina infinita </a>, usamos um algoritmo genético para encontrar menor e o maior caminho, respectivamente, que passa por todas as cidades. O interessante é que em um caso usamos uma função seleção por torneio em que o vencedor é caminho de menor distância,
 enquanto no outro caso o vencedor é o caminho de maior distância. Apenas com essa simples mudança, conseguimos mudar o comportamento da população ao longo das gerações. Com isso chegamos ao resultado: </p>
 
-<p align="center"><img src="https://user-images.githubusercontent.com/106620307/233840588-23db7da2-e5ec-4979-84c2-f2be16b8cee1.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/106620307/233842601-6c65bfee-6a77-4ac9-83a6-cc7d7bac3641.png"></p>
 
