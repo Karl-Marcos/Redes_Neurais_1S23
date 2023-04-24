@@ -28,3 +28,9 @@ enquanto no outro caso o vencedor é o caminho de maior distância. Apenas com e
 
 <p align="center"><img src="https://user-images.githubusercontent.com/106620307/233842601-6c65bfee-6a77-4ac9-83a6-cc7d7bac3641.png"></p>
 
+### Função de Himmelblau
+
+<p align="justify">
+No experimento <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.06%20-%20Himmelblau%20e%20sua%20funcao.ipynb"> Himmelblau e sua função </a>, utilizamos um algoritmo genético para encontrar mínimos locais da função de Himmelblau. O domínio da função é o plano (x,y), de maneira que podemos plotar os indivíduos como pontos 2D. Abaixo podemos ver como a população de indivíduos evolui com o passar das gerações onde cada cor representa uma repetição do experimento: </p> 
+
+<p align="center"><img src="https://user-images.githubusercontent.com/106620307/233873524-dbb114fa-34f9-4f25-b93c-068edde259dd.png"></p>
