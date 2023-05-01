@@ -1,6 +1,7 @@
 # Importações:
 
 import random as rd
+import numpy as np
 
 # Funções:
 
@@ -77,6 +78,15 @@ def cria_itens(n):
     for i in range(n):
         itens[f"item {i}"] = (10*rd.random(), 10*rd.random())
     return itens
+
+
+def serie_fourier(x, coeficientes):
+    As = coeficientes[0]
+    Bs = coeficientes[1]
+    y = As[0]/2
+    for i in range(1, len(As)):
+        y = float(y + As[i]*np.cos(i*x) + Bs[i]*np.sin(i*x))
+    return y
 
 
 ###############################################################################
@@ -248,6 +258,23 @@ def individuo_mochila(itens):
     return individuo
 
 
+def individuo_serie(ordem):
+    """Gera os coeficientes de um polinomio de Fourier
+    Args:
+        ordem: ordem do polinômio
+    Returns:
+        Lista de duas listas, uma com os coeficientes "A"s e "B"s
+    """
+    A = []
+    B = []
+    while len(A) < ordem:
+        A.append(rd.uniform(-5, 5))
+        B.append(rd.uniform(-5, 5))
+    B[0] = 0
+    individuo = [A,B]
+    return individuo
+
+
 ###############################################################################
 #                                  População                                  #
 ###############################################################################
@@ -356,6 +383,20 @@ def populacao_inicial_mochila(tamanho, itens):
     for n in range(tamanho):
         populacao.append(individuo_mochila(itens))
     return populacao    
+
+
+def populacao_inicial_serie(tamanho, ordem):
+    """Cria população inicial para o polinomio de Fourier
+    Args: 
+        tamanho: tamanho da população
+        ordem: ordem do polinomio
+    Returns:
+        população que é uma lista de indivíduos
+    """
+    populacao = []
+    for n in range(tamanho):
+        populacao.append(individuo_serie(ordem))
+    return populacao
 
 
 ###############################################################################
@@ -525,7 +566,27 @@ def cruzamento_subconjunto(pai, mae):
     filho1 = rd.sample(elementos, len(pai))
     filho2 = rd.sample(elementos, len(mae))
     return filho1, filho2
-    
+
+
+def cruzamento_serie(pai, mae):
+    """Operador de cruzamento de ponto simples para uma lista de duas listas
+    Args:
+        pai: listas correspondente a um individuo
+        mae: listas correspondente a um individuo
+    Returns:
+        Duas listas: sendo que cada uma tem duas listas e representa 
+        um filho dos pais que foram os qrgumentos.
+    """
+    Apai = pai[0]
+    Bpai = pai[1]
+    Amae = mae[0]
+    Bmae = mae[1]
+    Afilho1, Afilho2 = cruzamento_ponto_simples(Apai, Amae)
+    Bfilho1, Bfilho2 = cruzamento_ponto_simples(Bpai, Bmae)
+    filho1 = [Afilho1, Bfilho1]
+    filho2 = [Afilho2, Bfilho2]
+    return filho1, filho2
+
 
 ###############################################################################
 #                                   Mutação                                   #
@@ -684,6 +745,21 @@ def mutacao_mochila(individuo, itens):
     return individuo
 
 
+def mutacao_serie(individuo):
+    """Operador de mutação para o polinomio de Fourier
+    Args:
+        indiviuo: lista de itens na mochila
+    Returns:
+        individuo mutado
+    """
+    lista_a_ser_mutada = rd.randint(0, len(individuo) - 1)
+    gene_a_ser_mutado = rd.randint(0, len(individuo[lista_a_ser_mutada]) - 1)
+    individuo[lista_a_ser_mutada][gene_a_ser_mutado] = rd.uniform(-5,5)
+    individuo[1][0] = 0
+    return individuo
+    
+
+
 ###############################################################################
 #                         Função objetivo - indivíduos                        #
 ###############################################################################
@@ -800,7 +876,6 @@ def funcao_objetivo_mochila(individuo, itens, p):
         p: limite de peso que a mochila aguenta
     Returns:
         número função objetivo da mochila
-
     """
     pesos = []
     for i in individuo:
@@ -815,6 +890,18 @@ def funcao_objetivo_mochila(individuo, itens, p):
             valores.append(valor)
         return sum(valores)
     
+
+def funcao_objetivo_serie(individuo, desenho):
+    erro = []
+    for i in desenho:
+        x = i[0]
+        yd = i[1]
+        ys = serie_fourier(x, individuo)
+        erro.append((ys-yd)**2)
+    mse = np.mean(erro)
+    rmse = np.sqrt(mse)
+    return rmse
+
     
 ###############################################################################
 #                         Função objetivo - população                         #
@@ -913,4 +1000,19 @@ def funcao_objetivo_pop_mochila(populacao, itens, p):
     resultado = []
     for individuo in populacao:
         resultado.append(funcao_objetivo_mochila(individuo, itens, p))
+    return resultado
+
+
+def funcao_objetivo_pop_serie(populacao, desenho):
+    """Computa a função objetivo de uma população de mochilas
+    Args:
+        populacao: lista com todas as mochilas da população
+        itens: dicionário dos itens possíveis
+        p: limite de peso que a mochila aguenta
+    Returns:
+        lista dos números função objetivo das mochilas
+    """
+    resultado = []
+    for individuo in populacao:
+        resultado.append(funcao_objetivo_serie(individuo, desenho))
     return resultado
