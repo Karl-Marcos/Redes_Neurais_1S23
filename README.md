@@ -14,7 +14,7 @@ GPT, Chat - 2023
 Esse repositório é dedicado às atividades da disciplina do terceiro semestre, na Ilum Escola de Ciência, ministrada pelo <a href="https://github.com/drcassar"> Prof. Daniel R. Cassar </a>, na qual aprendemos ferramentas computacionais inspiradas na biologia. Os experimentos foram propostos pelo professor e realizados pelo aluno <a href="https://github.com/Karl-Marcos"> Marcos de Cerqueira Leite </a>  em sala e estão separados em duas pastas:  </p>
 <p align="justify"> </p>
 
-+  <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/tree/main/AlgoritmosGeneticos"> Algoritmos Genéticos </a> : Onze experimentos de algoritmos genéticos, cada um em um arquivo de Jupyter (.ipynb) além de arquivos de python (.py) contendo funções e classes utilizadas nos experimentos.
++  <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/tree/main/AlgoritmosGeneticos"> Algoritmos Genéticos </a> : Doze experimentos de algoritmos genéticos, cada um em um arquivo de Jupyter (.ipynb) além de arquivos de python (.py) contendo funções e classes utilizadas nos experimentos.
   
 +  <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/tree/main/RedesNeurais"> Redes Neurais </a> (vazio por enquanto): X experimentos de redes neurais, cada um em um arquivo de Jupyter (.ipynb) além de arquivos de python (.py) contendo funções e classes utilizadas nos experimentos. </p>
 
