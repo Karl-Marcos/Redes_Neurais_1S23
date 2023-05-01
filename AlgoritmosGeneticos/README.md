@@ -34,6 +34,9 @@ Esse experimento trata de minimizar a famosa função de Himmelblau utilizando u
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.09%20-%20liga%20ternaria%20mais%20cara.ipynb">Experimento GA.09 - A liga ternária mais cara do mundo </a> <br>
 Esse experimento utiliza uma algoritmo genético para maximizar o custo de uma liga composta por três elementos químicos.
 
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.11%20-%20experimento%20que%20eu%20escolhi.ipynb" >Experimento GA.11 - Polinômio de Fourier </a> <br>
+Usando um algoritmo genético para encontrar o polinômio de Fourier que melhor aproxima a função desenhada pelo Professor Martínez.
+
 ## Arquivos Python <br>
 
  - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/funcoes.py"> funcoes.py </a> Contém todas as funções em python usadas nos experimentos <br>
