@@ -4,7 +4,7 @@
 Os experimentos foram realizados nos notebooks abaixo, que são arquivos **.ipynb** <br>
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/RedesNeurais/experimento%20R.01%20-%20derivadas.ipynb">Experimento R.01 - Recordando Derivadas </a> <br>
 
-- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/RedesNeurais/experimento%20R.02%20-%20classes.ipynb"> Experimento R.02 - Introdução à Classes </a> <br>
+- <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/RedesNeurais/experimento%20R.02%20-%20classes.ipynb"> Experimento R.02 - Introdução a Classes </a> <br>
 
 - <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/RedesNeurais/experimento%20R.03%20-%20construindo%20um%20grafo%20automaticamente.ipynb">Experimento R.03 - Construindo um grafo automaticamente
  </a> <br>
