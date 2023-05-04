@@ -1,3 +1,5 @@
+<h2 align="center"> ALGORITMOS GENÉTICOS </h2>
+
 ## Experimentos
 
 Os experimentos foram realizados nos notebooks abaixo, que são arquivos **.ipynb** <br>
