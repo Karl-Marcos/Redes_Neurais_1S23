@@ -27,8 +27,8 @@ class Valor:
         saida.propagar = propagar_adicao
 
         return saida
-
-    def __radd__(self, outro_valor):  # para outro_valor + self
+    
+    def __radd__(self, outro_valor): # outro_valor + self
         return self + outro_valor
 
     def __mul__(self, outro_valor):
@@ -46,27 +46,16 @@ class Valor:
         saida.propagar = propagar_multiplicacao
 
         return saida
-
-    def __rmul__(self, outro_valor):  # para outro_valor * self
+    
+    def __rmul__(self, outro_valor): # outro_valor * self
         return self * outro_valor
-
-    def exp(self):
-        data = math.exp(self.data)
-        progenitor = (self,)
-        operador_mae = "exp"
-        saida = Valor(data, progenitor, operador_mae)
-
-        def propagar_exp():
-            self.grad += saida.grad * data
-
-        saida.propagar = propagar_exp
-
-        return saida
-
-    def __pow__(self, expoente):
+    
+    def __pow__(self, expoente):  # self ** expoente
+        
         assert isinstance(expoente, (int, float))
-        data = self.data**expoente
-        progenitor = (self,)
+
+        data = self.data ** expoente
+        progenitor = (self, )
         operador_mae = f"**{expoente}"
         saida = Valor(data, progenitor, operador_mae)
 
@@ -76,20 +65,34 @@ class Valor:
         saida.propagar = propagar_exponenciacao
 
         return saida
-
-    def __truediv__(self, outro_valor):  # self / outro_valor
+    
+    def __truediv__(self, outro_valor): # self / outro_valor
         return self * outro_valor ** (-1)
-
-    def __neg__(self):  # -self
-        return -1 * self
-
-    def __sub__(self, outro_valor):
+    
+    def __neg__(self):  # - self
+        return self * (-1)
+    
+    def __sub__(self, outro_valor):  # self - outro_valor
         return self + (-outro_valor)
+    
+    def __rsub__(self, outro_valor):  # outro_valor - self
+        return self * (-1) + outro_valor
+    
+    def exp(self):
 
-    def __rsub__(self, outro_valor):
-        return -self + outro_valor
+        data = math.exp(self.data)
+        progenitor = (self, )
+        operador_mae = "exp"
+        saida = Valor(data, progenitor, operador_mae)
 
-    def sig(self):
+        def propagar_exp():
+            self.grad += saida.grad * data
+
+        saida.propagar = propagar_exp
+
+        return saida
+    
+    def sig(self): 
         return self.exp() / (self.exp() + 1)
 
     def propagar(self):
@@ -112,4 +115,3 @@ class Valor:
 
         for v in reversed(ordem_topologica):
             v.propagar()
- 
