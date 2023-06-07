@@ -18,6 +18,10 @@ Esse repositório é dedicado às atividades da disciplina do terceiro semestre,
   
 +  <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/tree/main/RedesNeurais"> Redes Neurais </a> (vazio por enquanto): X experimentos de redes neurais, cada um em um arquivo de Jupyter (.ipynb) além de arquivos de python (.py) contendo funções e classes utilizadas nos experimentos. </p>
 
+<p align="justify">
+Ao final do semestre, foi elaborado um trabalho final sobre o conteúdo, presente em <a href="https://github.com/Karl-Marcos/RNAG_Trabalho_Final"> RNAG_Trabalho_Final</a>, que consiste na aplicação de Algoritmo Genético, mais especificamente de Programação Genética, para resolver equações diferenciais simbólicamente. </p>
+<p align="justify"> </p>
+
 ## Resultados interessantes
 
 ### Caixeiro viajante
@@ -34,3 +38,10 @@ enquanto no outro caso o vencedor é o caminho de maior distância. Apenas com e
 No experimento <a href="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/AlgoritmosGeneticos/experimento%20GA.06%20-%20Himmelblau%20e%20sua%20funcao.ipynb"> Himmelblau e sua função </a>, utilizamos um algoritmo genético para encontrar mínimos locais da função de Himmelblau. O domínio da função é o plano (x,y), de maneira que podemos plotar os indivíduos como pontos 2D. Abaixo podemos ver como a população de indivíduos evolui com o passar das gerações onde cada cor representa uma repetição do experimento: </p> 
 
 <p align="center"><img src="https://user-images.githubusercontent.com/106620307/233873524-dbb114fa-34f9-4f25-b93c-068edde259dd.png"></p>
+
+### Rede neural do zero!
+
+<p align="justify">
+Ao longo das aulas de redes neurais, aprendemos a programar uma rede neural com python puro! Desde como criar a classe Valor, que armazena a informação de um neuronio, parâmetro, input ou output da rede. Além disso, aprendemos a plotar o gráfico computacional de uma rede. Aqui está enorme grafo de uma rede extremamente simples: </p> 
+
+<p align="center"><img src="https://github.com/Karl-Marcos/Redes_Neurais_1S23/blob/main/RedesNeurais/rede_neural.png"></p>
